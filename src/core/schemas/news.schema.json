@@ -1,20 +1,22 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["items", "source", "confidence"],
-  "properties": {
-    "items": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["headline", "date"],
-        "properties": {
-          "headline": {"type": "string"},
-          "date": {"type": "string", "format": "date"}
-        }
-      }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/news.schema.json",
+  "title": "News",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["date", "title", "category", "url", "summary", "confidence"],
+    "properties": {
+      "date": { "type": "string", "format": "date" },
+      "title": { "type": "string" },
+      "category": {
+        "type": "string",
+        "enum": ["incident", "contract", "M&A", "sanctions", "ESG", "HR", "other"]
+      },
+      "url": { "type": "string", "format": "uri" },
+      "summary": { "type": "string" },
+      "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
     },
-    "source": {"type": "string"},
-    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+    "additionalProperties": false
   }
 }

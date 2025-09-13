@@ -1,14 +1,11 @@
 [build-system]
-requires = ["setuptools>=67.6"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "finfixer"
+name = "company-report"
 version = "0.1.0"
-description = "FinFixer project"
-readme = "README.md"
-authors = [{name = "Example", email = "example@example.com"}]
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "pydantic",
     "jsonschema",
@@ -27,9 +24,20 @@ dependencies = [
     "black",
 ]
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = [
+  "core",
+  "core.schemas",
+]
+
+include-package-data = true
+
+[tool.setuptools.package-data]
+"core.schemas" = ["*.schema.json"]
+
 [tool.black]
 line-length = 88
 
 [tool.ruff]
 line-length = 88
-
