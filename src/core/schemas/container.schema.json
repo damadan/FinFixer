@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "business_overview",
+    "legal_structure",
+    "financials",
+    "legal_cases",
+    "news",
+    "assets_gallery",
+    "source",
+    "confidence"
+  ],
+  "properties": {
+    "business_overview": {"$ref": "business_overview.schema.json"},
+    "legal_structure": {"$ref": "legal_structure.schema.json"},
+    "financials": {"$ref": "financials.schema.json"},
+    "legal_cases": {"$ref": "legal_cases.schema.json"},
+    "news": {"$ref": "news.schema.json"},
+    "assets_gallery": {"$ref": "assets_gallery.schema.json"},
+    "source": {"type": "string"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  }
+}
