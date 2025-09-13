@@ -1,25 +1,25 @@
-"""Load JSON schemas for SGR sections."""
-
 from __future__ import annotations
-
 import json
-from pathlib import Path
+from importlib.resources import files
+from typing import Dict, Any
 
-BASE_DIR = Path(__file__).resolve().parent
+# Разрешённые имена схем (для явной валидации)
+SCHEMA_FILES = {
+    "container": "container.schema.json",
+    "business_overview": "business_overview.schema.json",
+    "legal_structure": "legal_structure.schema.json",
+    "financials": "financials.schema.json",
+    "legal_cases": "legal_cases.schema.json",
+    "news": "news.schema.json",
+    "assets_gallery": "assets_gallery.schema.json",
+}
 
-SCHEMA_NAMES = [
-    "business_overview",
-    "legal_structure",
-    "financials",
-    "legal_cases",
-    "news",
-    "assets_gallery",
-    "container",
-]
 
-SCHEMAS: dict[str, dict] = {}
-for name in SCHEMA_NAMES:
-    with (BASE_DIR / f"{name}.schema.json").open(encoding="utf-8") as f:
-        SCHEMAS[name] = json.load(f)
-
-__all__ = ["SCHEMAS", "SCHEMA_NAMES"]
+def load_schema(name: str) -> Dict[str, Any]:
+    """
+    Возвращает JSON-схему по короткому имени (например, 'financials').
+    """
+    if name not in SCHEMA_FILES:
+        raise KeyError(f"Unknown schema: {name}")
+    path = files(__package__).joinpath(SCHEMA_FILES[name])
+    return json.loads(path.read_text(encoding="utf-8"))

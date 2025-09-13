@@ -1,20 +1,47 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/legal_structure.schema.json",
+  "title": "LegalStructure",
   "type": "object",
-  "required": ["owners", "source", "confidence"],
+  "required": ["nodes", "edges", "sources", "confidence"],
   "properties": {
-    "owners": {
+    "nodes": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["name", "share"],
+        "required": ["id", "type", "label"],
         "properties": {
-          "name": {"type": "string"},
-          "share": {"type": "number", "minimum": 0, "maximum": 100}
-        }
+          "id": { "type": "string" },
+          "type": { "type": "string", "enum": ["HoldCo", "OpCo", "SPV", "Person"] },
+          "label": { "type": "string" },
+          "inn": { "type": ["string", "null"], "pattern": "^(\\d{10}|\\d{12})$" },
+          "ogrn": { "type": ["string", "null"], "pattern": "^(\\d{13}|\\d{15})$" },
+          "status": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
       }
     },
-    "source": {"type": "string"},
-    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
-  }
+    "edges": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "relation"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "relation": { "type": "string", "enum": ["owns", "controls", "pledge"] },
+          "share": { "type": ["number", "null"], "minimum": 0, "maximum": 100 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+  },
+  "additionalProperties": false
 }

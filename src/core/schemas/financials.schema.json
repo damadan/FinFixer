@@ -1,12 +1,75 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["revenue", "profit", "reporting_date", "source", "confidence"],
-  "properties": {
-    "revenue": {"type": "number", "minimum": 0},
-    "profit": {"type": "number"},
-    "reporting_date": {"type": "string", "format": "date"},
-    "source": {"type": "string"},
-    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/financials.schema.json",
+  "title": "Financials",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["period", "currency", "pnl", "bs", "cf", "derived", "source", "confidence"],
+    "properties": {
+      "period": {
+        "type": "string",
+        "pattern": "^(FY\\d{4}|Q[1-4]Y\\d{4}|\\d{4}(-\\d{2})?)$"
+      },
+      "currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+      "pnl": {
+        "type": "object",
+        "required": ["revenue", "cogs", "gross_profit", "ebit", "net_income"],
+        "properties": {
+          "revenue": { "type": ["number", "null"] },
+          "cogs": { "type": ["number", "null"] },
+          "gross_profit": { "type": ["number", "null"] },
+          "opex": { "type": ["number", "null"] },
+          "ebit": { "type": ["number", "null"] },
+          "net_income": { "type": ["number", "null"] }
+        },
+        "additionalProperties": false
+      },
+      "bs": {
+        "type": "object",
+        "required": ["total_assets", "inventory", "receivables", "payables", "cash", "st_debt", "lt_debt", "current_assets", "current_liabilities"],
+        "properties": {
+          "total_assets": { "type": ["number", "null"] },
+          "inventory": { "type": ["number", "null"] },
+          "receivables": { "type": ["number", "null"] },
+          "payables": { "type": ["number", "null"] },
+          "cash": { "type": ["number", "null"] },
+          "st_debt": { "type": ["number", "null"] },
+          "lt_debt": { "type": ["number", "null"] },
+          "current_assets": { "type": ["number", "null"] },
+          "current_liabilities": { "type": ["number", "null"] }
+        },
+        "additionalProperties": false
+      },
+      "cf": {
+        "type": "object",
+        "required": ["cfo", "cfi", "cff", "ending_cash"],
+        "properties": {
+          "cfo": { "type": ["number", "null"] },
+          "cfi": { "type": ["number", "null"] },
+          "cff": { "type": ["number", "null"] },
+          "ending_cash": { "type": ["number", "null"] }
+        },
+        "additionalProperties": false
+      },
+      "derived": {
+        "type": "object",
+        "required": ["net_debt", "nwc", "inv_days", "ar_days", "ap_days", "ebit_margin", "net_margin"],
+        "properties": {
+          "net_debt": { "type": ["number", "null"] },
+          "nwc": { "type": ["number", "null"] },
+          "inv_days": { "type": ["number", "null"] },
+          "ar_days": { "type": ["number", "null"] },
+          "ap_days": { "type": ["number", "null"] },
+          "ebit_margin": { "type": ["number", "null"] },
+          "net_margin": { "type": ["number", "null"] }
+        },
+        "additionalProperties": false
+      },
+      "source": { "type": "string", "format": "uri" },
+      "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+    },
+    "additionalProperties": false
   }
 }
